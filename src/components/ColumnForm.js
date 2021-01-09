@@ -35,7 +35,7 @@ export default function ColumnForm({ onAddColumn }) {
   
   const onFinish = (values) => {
     onAddColumn(values);
-    console.log('Success:', values);
+    console.log(values);
     onReset();
   };
 

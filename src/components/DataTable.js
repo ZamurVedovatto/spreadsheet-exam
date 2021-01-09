@@ -1,21 +1,15 @@
-import { Table, Tag, Space } from 'antd';
+import { Table } from 'antd';
 
-export default function DataTable({ columns, dataSource }) {
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: (record) => ({
-      disabled: record.name === 'Disabled User',
-      // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
-
+export default function DataTable({ columns, dataSource, handleTableChange }) {
   return (
-    <Table rowSelection={{ ...rowSelection }}
-          dataSource={dataSource}
-          columns={columns}
+    <Table 
+      size="small"
+      title={() => 'Header'}
+      footer={() => 'Footer'}
+      dataSource={dataSource}
+      columns={columns}
+      onChange={handleTableChange}
+      pagination={{ pageSize: 50 }} scroll={{ y: 500 }}
     />
   )
 }
