@@ -1,0 +1,2 @@
+change css to sass
+change component function to arrow function
