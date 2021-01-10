@@ -49,6 +49,8 @@ export default function Spreadsheet() {
         columns={columns}
         dataSource={dataSource}
       ></DataTable>
+      <hr />
+      <button onClick={addOne}>add 10 rows</button>
     </>
   )
 }
