@@ -8,7 +8,7 @@ const thirdColumn = { title: 'Age', dataIndex: 'age', key: 'age' };
 
 export default function Spreadsheet() {
   const [columns, setColumns] = useState([firstColumn, secondColumn, thirdColumn]);
-  const [dataSource, setDataSource] = useState([{key: '1', name: 'Mike', age: 11}, {key: '3', name: 'John', age: 22}]);
+  const [dataSource, setDataSource] = useState([{key: '1', name: 'Mike', age: 11, asas: 'asas'}, {key: '3', name: 'John', age: 22, asas: 'asas'}]);
 
   useEffect(() => {
     checkRows();
@@ -28,35 +28,14 @@ export default function Spreadsheet() {
   }
 
   const onAddRows = (amount) => {
-    // let newDataSource = [...dataSource];
-    // for (let index = 0; index < amount; index++) {
-    //   const element = { key: (index+2).toString(), name: 'Mike', };
-    //   newDataSource.push(element);
-    // }
-    // console.log(newDataSource)
-    // setDataSource([...dataSource, newDataSource])
   }
 
   const fillDataSource = () => {
-    // columns.forEach(column => {
-    //   console.log(column.key);
-    // })
     console.log(dataSource);
   }
 
-  const handleTableChange = () => {
-    console.log(dataSource)
-  }
-
-  //   {
-  //     key: '1',
-  //     name: 'Mike',
-  //     age: 32,
-  //     address: '10 Downing Street',
-  //   },
-
   const addOne = () => {
-    let newOne = {key: '1', name: 'John'};
+    let newOne = {key: '1', name: 'John', age: 123, asas: 'asas'};
     setDataSource([...dataSource, newOne ])
   }
 
@@ -69,7 +48,6 @@ export default function Spreadsheet() {
       <DataTable
         columns={columns}
         dataSource={dataSource}
-        handleTableChange={handleTableChange}  
       ></DataTable>
     </>
   )

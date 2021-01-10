@@ -1,14 +1,13 @@
+import './DataTable.css'
 
-export default function DataTable({ columns, dataSource, handleTableChange }) {
+export default function DataTable({ columns, dataSource }) {
 
   const renderTableData = () => {
-    return dataSource.map((column, index) => {
-       const { key, name, age } = column //destructuring
+    return dataSource.map((columnData, index) => {
+        const { key, name, age } = columnData;
         return (
           <tr key={index}>
-            <td>{key}</td>
-            <td>{name}</td>
-            <td>{age}</td>
+            { columns.map(column => <td key={column.key}>{columnData[`${column.key}`]}</td>)}
           </tr>
       )
     })
@@ -16,7 +15,7 @@ export default function DataTable({ columns, dataSource, handleTableChange }) {
 
   return (
 
-    <table>
+    <table id="data-table">
       <thead>
       <tr>
         { columns.map(column => <th key={column.key}>{column.title}</th>)}
@@ -25,14 +24,7 @@ export default function DataTable({ columns, dataSource, handleTableChange }) {
       <tbody>
         {renderTableData()}
       </tbody>
-      
-      {/* <hr />
-      {JSON.stringify(dataSource)}
-      <hr />
-      {JSON.stringify(columns)} */}
-
     </table>
-
   )
 }
 
