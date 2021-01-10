@@ -1,16 +1,38 @@
-import { Table } from 'antd';
 
 export default function DataTable({ columns, dataSource, handleTableChange }) {
+
+  const renderTableData = () => {
+    return dataSource.map((column, index) => {
+       const { key, name, age } = column //destructuring
+        return (
+          <tr key={index}>
+            <td>{key}</td>
+            <td>{name}</td>
+            <td>{age}</td>
+          </tr>
+      )
+    })
+  }
+
   return (
-    <Table 
-      size="small"
-      title={() => 'Header'}
-      footer={() => 'Footer'}
-      dataSource={dataSource}
-      columns={columns}
-      onChange={handleTableChange}
-      pagination={{ pageSize: 50 }} scroll={{ y: 500 }}
-    />
+
+    <table>
+      <thead>
+      <tr>
+        { columns.map(column => <th key={column.key}>{column.title}</th>)}
+      </tr>
+      </thead>
+      <tbody>
+        {renderTableData()}
+      </tbody>
+      
+      {/* <hr />
+      {JSON.stringify(dataSource)}
+      <hr />
+      {JSON.stringify(columns)} */}
+
+    </table>
+
   )
 }
 
