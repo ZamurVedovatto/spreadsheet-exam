@@ -3,13 +3,16 @@ import ColumnForm from "./ColumnForm";
 import DataTable from "./DataTable";
 
 const firstColumn = { title: 'Key', dataIndex: 'key', key: 'key', type: 'text' };
-const secondColumn = { title: 'Name', dataIndex: 'name', key: 'name', type: 'number' };
-const thirdColumn = { title: 'Age', dataIndex: 'age', key: 'age', type: 'select' };
-const fourthColumn = { title: 'Age', dataIndex: 'age', key: 'age', type: 'date' };
+const secondColumn = { title: 'Name', dataIndex: 'name', key: 'name', type: 'text' };
+const thirdColumn = { title: 'Age', dataIndex: 'age', key: 'age', type: 'number' };
+const fourthColumn = { title: 'Birthday', dataIndex: 'birthday', key: 'birthday', type: 'date' };
+const fifthColumn = { title: 'Gender', dataIndex: 'gender', key: 'gender', type: 'select' };
 
 export default function Spreadsheet() {
-  const [columns, setColumns] = useState([firstColumn, secondColumn, thirdColumn, fourthColumn]);
-  const [dataSource, setDataSource] = useState([{key: '1', name: 'Mike', age: 11, asas: 'asas'}, {key: '3', name: 'John', age: 22, asas: 'asas'}]);
+  const [columns, setColumns] = useState([firstColumn, secondColumn, thirdColumn, fourthColumn, fifthColumn]);
+  const [dataSource, setDataSource] = useState([
+    {key: '1', name: 'Mike', age: 11, birthday: '15/10/2020', gender: 'M'},
+    {key: '2', name: 'Jonh', age: 22, birthday: '25/08/2019', gender: 'F'}]);
 
   useEffect(() => {
     checkRows();

@@ -4,6 +4,7 @@ import { Input, InputNumber, Select, DatePicker, Space } from 'antd';
 const { Option } = Select;
 
 export default function DataTable({ columns, dataSource }) {
+  const [editableRow, setEditableRow] = useState({});
   const [inEditMode, setInEditMode] = useState({
     status: false,
     rowKey: null
@@ -43,60 +44,92 @@ export default function DataTable({ columns, dataSource }) {
     console.log(date, dateString);
   }
 
-  const EditRow = ({ column, columnData }) => {
-    return <td key={column.key}><button style={{ marginRight: '1rem' }} onClick={onEdit}>edit</button> {columnData[`${column.key}`]}</td>
+  const EditRow = ({ column, rowData }) => {
+    return (
+      <td key={column.key}>
+        <button onClick={() => onEditRow(rowData)}>Edit</button> {rowData[`${column.key}`]}
+      </td>
+    )
   }
 
-  const SimpleRow = ({ column, columnData }) => {
+  const onEditRow = (rowData) => {
+    setEditableRow(rowData);
+    setInEditMode({...inEditMode, rowKey: rowData.key})
+    
+  }
+
+  const SimpleRow = ({ column, rowData }) => {
+    console.log(JSON.stringify(rowData));
+    console.log(rowData.key === inEditMode.rowKey)
+    console.log(rowData.key, inEditMode.rowKey)
+    let changeDisplay = (rowData.key === inEditMode.rowKey) ? true : false;
+
     switch (column.type) {
       case 'text':
-        return <td key={column.key}>
-          {columnData[`${column.key}`]} text
-          <Input placeholder="Basic usage" onChange={handleChangeInput} />
-        </td>
-
+        return (
+          <td key={column.key}>
+          { changeDisplay 
+            ? rowData[`${column.key}`]
+            : <Input placeholder="Basic usage" onChange={handleChangeInput} />
+          }
+          </td>
+        )
       case 'number':
-        return <td key={column.key}>
-          {columnData[`${column.key}`]} number
-          <InputNumber onChange={handleChangeInput} />
-        </td>
-
+        return (
+          <td key={column.key}>
+            { changeDisplay 
+              ? rowData[`${column.key}`]
+              : <InputNumber onChange={handleChangeInput} />
+            }
+          </td>
+        )
       case 'select':
-        return <td key={column.key}>
-          {columnData[`${column.key}`]} select
-          <Select defaultValue="lucy" onChange={handleChangeSelect}>
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="Yiminghe">yiminghe</Option>
-          </Select>
-        </td>
-
+        return (
+          <td key={column.key}>
+            { changeDisplay 
+              ? rowData[`${column.key}`]
+              : <Select defaultValue="lucy" onChange={handleChangeSelect}>
+                  <Option value="jack">Jack</Option>
+                  <Option value="lucy">Lucy</Option>
+                  <Option value="Yiminghe">yiminghe</Option>
+                </Select>
+            }
+          </td>
+        )
+        
       case 'date':
-        return<td key={column.key}>
-          {columnData[`${column.key}`]} date
-          <Space direction="vertical">
-            <DatePicker onChange={handleChangeDate} />
-          </Space>
-        </td>
-
-
+        return (
+          <td key={column.key}>
+          { changeDisplay
+            ? rowData[`${column.key}`]
+            : <Space direction="vertical">
+              <DatePicker onChange={handleChangeDate} />
+            </Space>
+          }
+          </td>
+        )
       default:
-        return <td key={column.key}>
-          {columnData[`${column.key}`]} text
-        </td>
+        return (
+          <td key={column.key}>
+          { changeDisplay 
+            ? rowData[`${column.key}`]
+            : <Input placeholder="Basic usage" onChange={handleChangeInput} />
+          }
+          </td>
+        )
     }
 
   }
 
   const renderTableData = () => {
-    return dataSource.map((columnData, index) => {
+    return dataSource.map((rowData, index) => {
       return (
         <tr key={index}>
           { columns.map(column => {
             return column.key === 'key' ?
-              <EditRow column={column} columnData={columnData}></EditRow>
+              <EditRow column={column} rowData={rowData}></EditRow>
               :
-              <SimpleRow column={column} columnData={columnData}></SimpleRow>
+              <SimpleRow column={column} rowData={rowData}></SimpleRow>
             // return <td key={column.key}>{columnData[`${column.key}`]}</td>
           })}
         </tr>
