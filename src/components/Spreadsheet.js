@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import ColumnForm from "./ColumnForm";
 import DataTable from "./DataTable";
 
-const firstColumn = { title: 'Key', dataIndex: 'key', key: 'key' };
-const secondColumn = { title: 'Name', dataIndex: 'name', key: 'name' };
-const thirdColumn = { title: 'Age', dataIndex: 'age', key: 'age' };
+const firstColumn = { title: 'Key', dataIndex: 'key', key: 'key', type: 'text' };
+const secondColumn = { title: 'Name', dataIndex: 'name', key: 'name', type: 'number' };
+const thirdColumn = { title: 'Age', dataIndex: 'age', key: 'age', type: 'select' };
+const fourthColumn = { title: 'Age', dataIndex: 'age', key: 'age', type: 'date' };
 
 export default function Spreadsheet() {
-  const [columns, setColumns] = useState([firstColumn, secondColumn, thirdColumn]);
+  const [columns, setColumns] = useState([firstColumn, secondColumn, thirdColumn, fourthColumn]);
   const [dataSource, setDataSource] = useState([{key: '1', name: 'Mike', age: 11, asas: 'asas'}, {key: '3', name: 'John', age: 22, asas: 'asas'}]);
 
   useEffect(() => {

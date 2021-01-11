@@ -1,5 +1,7 @@
 import './DataTable.css'
 import { useState, useEffect } from "react";
+import { Input, InputNumber, Select, DatePicker, Space } from 'antd';
+const { Option } = Select;
 
 export default function DataTable({ columns, dataSource }) {
   const [inEditMode, setInEditMode] = useState({
@@ -29,12 +31,61 @@ export default function DataTable({ columns, dataSource }) {
     // setUnitPrice(null);
   }
 
-  const KeyRow = ({ column, columnData }) => {
+  const handleChangeSelect = (value) => {
+    console.log(`selected ${value}`);
+  }
+
+  const handleChangeInput = (value) => {
+    console.log('changed', value);
+  }
+
+  const handleChangeDate = (date, dateString) => {
+    console.log(date, dateString);
+  }
+
+  const EditRow = ({ column, columnData }) => {
     return <td key={column.key}><button style={{ marginRight: '1rem' }} onClick={onEdit}>edit</button> {columnData[`${column.key}`]}</td>
   }
 
   const SimpleRow = ({ column, columnData }) => {
-    return <td key={column.key}>{columnData[`${column.key}`]}</td>
+    switch (column.type) {
+      case 'text':
+        return <td key={column.key}>
+          {columnData[`${column.key}`]} text
+          <Input placeholder="Basic usage" onChange={handleChangeInput} />
+        </td>
+
+      case 'number':
+        return <td key={column.key}>
+          {columnData[`${column.key}`]} number
+          <InputNumber onChange={handleChangeInput} />
+        </td>
+
+      case 'select':
+        return <td key={column.key}>
+          {columnData[`${column.key}`]} select
+          <Select defaultValue="lucy" onChange={handleChangeSelect}>
+            <Option value="jack">Jack</Option>
+            <Option value="lucy">Lucy</Option>
+            <Option value="Yiminghe">yiminghe</Option>
+          </Select>
+        </td>
+
+      case 'date':
+        return<td key={column.key}>
+          {columnData[`${column.key}`]} date
+          <Space direction="vertical">
+            <DatePicker onChange={handleChangeDate} />
+          </Space>
+        </td>
+
+
+      default:
+        return <td key={column.key}>
+          {columnData[`${column.key}`]} text
+        </td>
+    }
+
   }
 
   const renderTableData = () => {
@@ -42,7 +93,10 @@ export default function DataTable({ columns, dataSource }) {
       return (
         <tr key={index}>
           { columns.map(column => {
-            return column.key === 'key' ? <KeyRow column={column} columnData={columnData}></KeyRow> : <SimpleRow column={column} columnData={columnData}></SimpleRow>
+            return column.key === 'key' ?
+              <EditRow column={column} columnData={columnData}></EditRow>
+              :
+              <SimpleRow column={column} columnData={columnData}></SimpleRow>
             // return <td key={column.key}>{columnData[`${column.key}`]}</td>
           })}
         </tr>
