@@ -52,6 +52,12 @@ export default function Spreadsheet() {
     setDataSource(newArr);
   }
 
+  const changeHeaderTitle = (index, header) => {
+    let newArr = [...columns];
+    newArr[index] = header;
+    setColumns(newArr);
+  }
+
   return (
     <>
       <ColumnForm onAddColumn={onAddColumn}></ColumnForm>
@@ -61,6 +67,7 @@ export default function Spreadsheet() {
       <DataTable
         columns={columns}
         dataSource={dataSource}
+        changeHeaderTitle={changeHeaderTitle}
         changeItemOnData={changeItemOnData}
       ></DataTable>
       <hr />

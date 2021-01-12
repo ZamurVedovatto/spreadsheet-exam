@@ -1,10 +1,16 @@
-import moment from 'moment';
 import './DataTable.css'
 import { useState, useEffect } from "react";
 import { Input, InputNumber, Select, DatePicker, Space } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 const { Option } = Select;
 
-export default function DataTable({ columns, dataSource, changeItemOnData }) {
+export default function DataTable({ columns, dataSource, changeHeaderTitle, changeItemOnData }) {
+  const [editableHeader, setEditableHeader] = useState({});
+  const [inEditModeHeader, setInEditModeHeader] = useState({
+    status: false,
+    headerKey: null
+  });
+
   const [editableRow, setEditableRow] = useState({});
   const [inEditMode, setInEditMode] = useState({
     status: false,
@@ -16,19 +22,43 @@ export default function DataTable({ columns, dataSource, changeItemOnData }) {
       return row.key == editableRow.key; 
     });
     changeItemOnData(rowToChange, editableRow);
-    onCancel();
+    onCancel('row');
   }
 
-  const onCancel = () => {
-    setInEditMode({
-      status: false,
-      rowKey: null
-    })
+  const onSaveHeader = () => {
+    let headerTochange = columns.findIndex(function(column) { 
+      return column.key == editableHeader.key; 
+    });
+    changeHeaderTitle(headerTochange, editableHeader);
+    onCancel('header');
+  }
+
+  const onCancel = (type) => {
+    switch (type) {
+      case 'row':
+        setInEditMode({
+          status: false,
+          rowKey: null
+        })
+        break;
+      case 'header':
+        setInEditModeHeader({
+          status: false,
+          headerKey: null
+        })
+        break;
+      default:
+        break;
+    }
   }
 
   const handleChange = (value, columnKey) => {
-    console.log(value, columnKey)
-    setEditableRow({...editableRow, [columnKey]: value})
+    setEditableRow({...editableRow, [columnKey]: value});
+  }
+
+  const handleChangeHeader = (value, headerKey) => {
+    console.log(value, headerKey)
+    setEditableHeader({...editableHeader, title: value});
   }
 
   const EditRow = ({ column, rowData }) => {
@@ -113,7 +143,45 @@ export default function DataTable({ columns, dataSource, changeItemOnData }) {
           </td>
         )
     }
+  }
 
+
+
+
+
+
+
+
+  
+
+
+  const onEditHeader = (header) => {
+    console.log(header)
+    setEditableHeader(header);
+    setInEditModeHeader({...inEditModeHeader, status: true, headerKey: header.key});
+  }
+
+  const renderTableHeader = () => {
+
+    return columns.map((header, index) => {
+      let changeVisualization = (header.key === inEditModeHeader.headerKey) && inEditModeHeader.status;
+      return (
+        <th key={header.key}>
+          {
+            !changeVisualization
+            ? <> {header.title} <EditOutlined onClick={() => onEditHeader(header)} /> </>
+            : 
+            <>
+              <Input onChange={e => handleChangeHeader(e.target.value, header.key)} value={header.title} />
+              <div>
+                <button onClick={onSaveHeader}>Save</button>
+                <button onClick={onCancel}>Cancel</button>
+              </div>
+            </>
+          }
+          </th>
+      )
+    })
   }
 
   const renderTableData = () => {
@@ -125,7 +193,6 @@ export default function DataTable({ columns, dataSource, changeItemOnData }) {
               <EditRow column={column} rowData={rowData}></EditRow>
               :
               <SimpleRow column={column} rowData={rowData}></SimpleRow>
-            // return <td key={column.key}>{columnData[`${column.key}`]}</td>
           })}
         </tr>
       )
@@ -135,11 +202,10 @@ export default function DataTable({ columns, dataSource, changeItemOnData }) {
 
 
   return (
-
     <table id="data-table">
       <thead>
       <tr>
-        { columns.map(column => <th key={column.key}>{column.title}</th>)}
+        {renderTableHeader()}
       </tr>
       </thead>
       <tbody>
@@ -148,48 +214,3 @@ export default function DataTable({ columns, dataSource, changeItemOnData }) {
     </table>
   )
 }
-
-
-
-
-
-
-
-
-  // const dataSource = [
-  //   {
-  //     key: '1',
-  //     name: 'Mike',
-  //     age: 32,
-  //     address: '10 Downing Street',
-  //   },
-  //   {
-  //     key: '2',
-  //     name: 'John',
-  //     age: 42,
-  //     address: '10 Downing Street',
-  //   },
-  // ];
-  
-  // const columns = [
-  //   {
-  //     title: '',
-  //     dataIndex: 'key',
-  //     key: 'key'
-  //   },
-  //   {
-  //     title: 'Name',
-  //     dataIndex: 'name',
-  //     key: 'name',
-  //   },
-  //   {
-  //     title: 'Age',
-  //     dataIndex: 'age',
-  //     key: 'age',
-  //   },
-  //   {
-  //     title: 'Address',
-  //     dataIndex: 'address',
-  //     key: 'address',
-  //   },
-  // ];
