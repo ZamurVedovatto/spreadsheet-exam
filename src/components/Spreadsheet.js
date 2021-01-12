@@ -46,6 +46,12 @@ export default function Spreadsheet() {
     setDataSource([...dataSource, newOne ])
   }
 
+  const changeItemOnData = (index, row) => {
+    let newArr = [...dataSource];
+    newArr[index] = row;
+    setDataSource(newArr);
+  }
+
   return (
     <>
       <ColumnForm onAddColumn={onAddColumn}></ColumnForm>
@@ -55,6 +61,7 @@ export default function Spreadsheet() {
       <DataTable
         columns={columns}
         dataSource={dataSource}
+        changeItemOnData={changeItemOnData}
       ></DataTable>
       <hr />
       <button onClick={addOne}>add 10 rows</button>

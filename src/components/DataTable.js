@@ -1,25 +1,21 @@
+import moment from 'moment';
 import './DataTable.css'
 import { useState, useEffect } from "react";
 import { Input, InputNumber, Select, DatePicker, Space } from 'antd';
 const { Option } = Select;
 
-export default function DataTable({ columns, dataSource }) {
+export default function DataTable({ columns, dataSource, changeItemOnData }) {
   const [editableRow, setEditableRow] = useState({});
   const [inEditMode, setInEditMode] = useState({
     status: false,
     rowKey: null
   });
 
-  useEffect(() => {
-    console.log(editableRow)
-  }, [editableRow])
-
-  useEffect(() => {
-    console.log(inEditMode)
-  }, [inEditMode])
-
   const onSave = () => {
-    console.log(editableRow)
+    let rowToChange = dataSource.findIndex(function(row) { 
+      return row.key == editableRow.key; 
+    });
+    changeItemOnData(rowToChange, editableRow);
     onCancel();
   }
 
@@ -30,17 +26,9 @@ export default function DataTable({ columns, dataSource }) {
     })
   }
 
-  const handleChangeSelect = (value) => {
-    console.log(`selected ${value}`);
-  }
-
-  const handleChangeInput = (value, columnKey) => {
-    console.log('changed', value, columnKey);
-    setEditableRow({...editableRow, columnKey: value})
-  }
-
-  const handleChangeDate = (date, dateString) => {
-    console.log(date, dateString);
+  const handleChange = (value, columnKey) => {
+    console.log(value, columnKey)
+    setEditableRow({...editableRow, [columnKey]: value})
   }
 
   const EditRow = ({ column, rowData }) => {
@@ -74,7 +62,7 @@ export default function DataTable({ columns, dataSource }) {
           { 
             changeDisplay 
             ? rowData[`${column.key}`]
-            : <Input placeholder="Basic usage" onChange={e => handleChangeInput(e.target.value, column.key)} value={editableRow[`${column.key}`]} />
+            : <Input placeholder="" onChange={e => handleChange(e.target.value, column.key)} value={editableRow[`${column.key}`]} />
           }
           </td>
         )
@@ -84,7 +72,7 @@ export default function DataTable({ columns, dataSource }) {
             { 
               changeDisplay 
               ? rowData[`${column.key}`]
-              : <InputNumber onChange={e => handleChangeInput(e.target, column.key)} value={editableRow[`${column.key}`]} />
+              : <InputNumber onChange={e => handleChange(e, column.key)} value={editableRow[`${column.key}`]} />
             }
           </td>
         )
@@ -94,7 +82,7 @@ export default function DataTable({ columns, dataSource }) {
             { 
               changeDisplay 
               ? rowData[`${column.key}`]
-              : <Select defaultValue={editableRow[`${column.key}`]} onChange={handleChangeSelect}>
+              : <Select defaultValue={editableRow[`${column.key}`]} onChange={e => handleChange(e, column.key)}>
                   <Option value="M">Male</Option>
                   <Option value="F">Female</Option>
                 </Select>
@@ -109,7 +97,7 @@ export default function DataTable({ columns, dataSource }) {
             changeDisplay
             ? rowData[`${column.key}`]
             : <Space direction="vertical">
-              <DatePicker onChange={handleChangeDate} />
+              <input type="date" onChange={e => handleChange(e.target.value, column.key)} />
             </Space>
           }
           </td>
@@ -120,7 +108,7 @@ export default function DataTable({ columns, dataSource }) {
           { 
             changeDisplay 
             ? rowData[`${column.key}`]
-            : <Input placeholder="Basic usage" onChange={handleChangeInput} />
+            : <Input placeholder="Basic usage" onChange={e => handleChange(e.target.value, column.key)} />
           }
           </td>
         )
