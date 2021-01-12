@@ -10,34 +10,33 @@ export default function DataTable({ columns, dataSource }) {
     rowKey: null
   });
 
-  const onEdit = ({id, currentUnitPrice}) => {
-    setInEditMode({
-      status: true,
-      rowKey: id
-    })
-    // setUnitPrice(currentUnitPrice);
-  }
+  useEffect(() => {
+    console.log(editableRow)
+  }, [editableRow])
 
-  const onSave = ({id, newUnitPrice}) => {
-    // updateInventory({id, newUnitPrice});
+  useEffect(() => {
+    console.log(inEditMode)
+  }, [inEditMode])
+
+  const onSave = () => {
+    console.log(editableRow)
+    onCancel();
   }
 
   const onCancel = () => {
-    // reset the inEditMode state value
     setInEditMode({
       status: false,
       rowKey: null
     })
-    // reset the unit price state value
-    // setUnitPrice(null);
   }
 
   const handleChangeSelect = (value) => {
     console.log(`selected ${value}`);
   }
 
-  const handleChangeInput = (value) => {
-    console.log('changed', value);
+  const handleChangeInput = (value, columnKey) => {
+    console.log('changed', value, columnKey);
+    setEditableRow({...editableRow, columnKey: value})
   }
 
   const handleChangeDate = (date, dateString) => {
@@ -45,53 +44,59 @@ export default function DataTable({ columns, dataSource }) {
   }
 
   const EditRow = ({ column, rowData }) => {
+    let changeVisualization = (rowData.key === inEditMode.rowKey) && inEditMode.status;
     return (
       <td key={column.key}>
-        <button onClick={() => onEditRow(rowData)}>Edit</button> {rowData[`${column.key}`]}
+        {
+          (changeVisualization)
+          ?
+          <div>
+            <button onClick={onSave}>Save</button>
+            <button onClick={onCancel}>Cancel</button>
+          </div>
+          : <button onClick={() => onEditRow(rowData)}>Edit ({rowData[`${column.key}`]})</button>
+        }
       </td>
     )
   }
 
   const onEditRow = (rowData) => {
     setEditableRow(rowData);
-    setInEditMode({...inEditMode, rowKey: rowData.key})
-    
+    setInEditMode({...inEditMode, status: true, rowKey: rowData.key})
   }
 
   const SimpleRow = ({ column, rowData }) => {
-    console.log(JSON.stringify(rowData));
-    console.log(rowData.key === inEditMode.rowKey)
-    console.log(rowData.key, inEditMode.rowKey)
-    let changeDisplay = (rowData.key === inEditMode.rowKey) ? true : false;
-
+    let changeDisplay = (rowData.key === inEditMode.rowKey) ? false : true;
     switch (column.type) {
       case 'text':
         return (
           <td key={column.key}>
-          { changeDisplay 
+          { 
+            changeDisplay 
             ? rowData[`${column.key}`]
-            : <Input placeholder="Basic usage" onChange={handleChangeInput} />
+            : <Input placeholder="Basic usage" onChange={e => handleChangeInput(e.target.value, column.key)} value={editableRow[`${column.key}`]} />
           }
           </td>
         )
       case 'number':
         return (
           <td key={column.key}>
-            { changeDisplay 
+            { 
+              changeDisplay 
               ? rowData[`${column.key}`]
-              : <InputNumber onChange={handleChangeInput} />
+              : <InputNumber onChange={e => handleChangeInput(e.target, column.key)} value={editableRow[`${column.key}`]} />
             }
           </td>
         )
       case 'select':
         return (
           <td key={column.key}>
-            { changeDisplay 
+            { 
+              changeDisplay 
               ? rowData[`${column.key}`]
-              : <Select defaultValue="lucy" onChange={handleChangeSelect}>
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
-                  <Option value="Yiminghe">yiminghe</Option>
+              : <Select defaultValue={editableRow[`${column.key}`]} onChange={handleChangeSelect}>
+                  <Option value="M">Male</Option>
+                  <Option value="F">Female</Option>
                 </Select>
             }
           </td>
@@ -100,7 +105,8 @@ export default function DataTable({ columns, dataSource }) {
       case 'date':
         return (
           <td key={column.key}>
-          { changeDisplay
+          { 
+            changeDisplay
             ? rowData[`${column.key}`]
             : <Space direction="vertical">
               <DatePicker onChange={handleChangeDate} />
@@ -111,7 +117,8 @@ export default function DataTable({ columns, dataSource }) {
       default:
         return (
           <td key={column.key}>
-          { changeDisplay 
+          { 
+            changeDisplay 
             ? rowData[`${column.key}`]
             : <Input placeholder="Basic usage" onChange={handleChangeInput} />
           }

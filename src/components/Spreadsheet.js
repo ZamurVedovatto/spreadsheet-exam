@@ -11,8 +11,11 @@ const fifthColumn = { title: 'Gender', dataIndex: 'gender', key: 'gender', type:
 export default function Spreadsheet() {
   const [columns, setColumns] = useState([firstColumn, secondColumn, thirdColumn, fourthColumn, fifthColumn]);
   const [dataSource, setDataSource] = useState([
-    {key: '1', name: 'Mike', age: 11, birthday: '15/10/2020', gender: 'M'},
-    {key: '2', name: 'Jonh', age: 22, birthday: '25/08/2019', gender: 'F'}]);
+    {key: '1', name: 'Mike', age: 11, birthday: '2021-01-13', gender: 'M'},
+    {key: '2', name: 'Jonh', age: 22, birthday: '2021-01-13', gender: 'F'},
+    {key: '3', name: 'AAAA', age: 11, birthday: '2021-01-13', gender: 'M'},
+    {key: '4', name: 'BBBB', age: 11, birthday: '2021-01-13', gender: 'F'}
+  ])
 
   useEffect(() => {
     checkRows();
@@ -39,7 +42,7 @@ export default function Spreadsheet() {
   }
 
   const addOne = () => {
-    let newOne = {key: '1', name: 'John', age: 123, asas: 'asas'};
+    let newOne = {key: '3', name: 'John', age: 123, asas: 'asas'};
     setDataSource([...dataSource, newOne ])
   }
 
