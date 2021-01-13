@@ -58,8 +58,8 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
     setEditableRow({...editableRow, [columnKey]: value});
   }
 
-  const handleChangeHeader = (value, headerKey) => {
-    console.log(value, headerKey)
+  const handleChangeHeader = (evt) => {    
+    let value = evt.target.value;
     setEditableHeader({...editableHeader, title: value});
   }
 
@@ -99,7 +99,7 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
           { 
             changeDisplay 
             ? rowData[`${column.key}`]
-            : <Input autoFocus onChange={e => handleChange(e.target.value, column.key)} value={editableRow[`${column.key}`]} />
+            : <Input onChange={e => handleChange(e.target.value, column.key)} value={editableRow[`${column.key}`]} />
           }
           </td>
         )
@@ -109,7 +109,7 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
             { 
               changeDisplay 
               ? rowData[`${column.key}`]
-              : <InputNumber autoFocus onChange={e => handleChange(e, column.key)} value={editableRow[`${column.key}`]} />
+              : <InputNumber onChange={e => handleChange(e, column.key)} value={editableRow[`${column.key}`]} />
             }
           </td>
         )
@@ -143,7 +143,7 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
           { 
             changeDisplay 
             ? rowData[`${column.key}`]
-            : <Input autoFocus onChange={e => handleChange(e.target.value, column.key)} />
+            : <Input onChange={e => handleChange(e.target.value, column.key)} />
           }
           </td>
         )
@@ -173,7 +173,7 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
             </>
             : 
             <>
-              <Input onChange={e => handleChangeHeader(e.target.value, header.key)} value={header.title} />
+              <Input onChange={handleChangeHeader} value={editableHeader.title} />
               <div>
                 <Button onClick={onSaveHeader}>Save</Button>
                 <Button onClick={() => onCancel('header')}>Cancel</Button>
