@@ -120,8 +120,7 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
               changeDisplay 
               ? rowData[`${column.key}`]
               : <Select defaultValue={editableRow[`${column.key}`]} onChange={e => handleChange(e, column.key)}>
-                  <Option value="M">Male</Option>
-                  <Option value="F">Female</Option>
+                  { column.options.map((option) => <Option key={option} value={option}>{option}</Option>) }
                 </Select>
             }
           </td>

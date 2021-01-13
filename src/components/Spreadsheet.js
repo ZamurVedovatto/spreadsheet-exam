@@ -21,6 +21,7 @@ export default function Spreadsheet() {
   const [idNewRow, setIdNewRow] = useState(1);
 
   useEffect(() => {
+    console.log(columns)
     if (columns.length === 1) addRow(1);
   }, [columns])
 
