@@ -1,24 +1,33 @@
 #data-table {
   text-align: center;
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  border: 3px solid #ddd;
+  border: 1px solid #ddd;
   width: 100%;
 }
 
 #data-table td, #data-table th {
   border: 1px solid #ddd;
-  padding: 8px;
+  padding: .5rem 1rem;
 }
 
-#data-table tr:nth-child(even){background-color: #f2f2f2;}
+#data-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
 
-#data-table tr:hover {background-color: #ddd;}
+#data-table tr:hover {
+  background-color: #ddd;
+}
 
 #data-table th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: center;
-  background-color: #4CAF50;
+  background-color:#486894;
   color: white;
+}
+
+.row-id-label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #020202;
+  margin-right: .5rem;
 }

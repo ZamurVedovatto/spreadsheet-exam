@@ -7,3 +7,5 @@ https://ant.design/components/table/
 
 
 https://medium.com/@vanu.verma/creating-a-dynamic-table-in-react-part-1-36cc65a81e62
+
+https://thoughtbot.com/blog/using-redux-with-react-hooks

@@ -1,7 +1,9 @@
+import { nanoid } from 'nanoid'
+
 import './DataTable.css'
-import { useState, useEffect } from "react";
-import { Input, InputNumber, Select, DatePicker, Space } from 'antd';
+import { useState } from "react";
 import { EditOutlined } from '@ant-design/icons';
+import { Input, InputNumber, Select, Button } from 'antd';
 const { Option } = Select;
 
 export default function DataTable({ columns, dataSource, changeHeaderTitle, changeItemOnData }) {
@@ -69,10 +71,14 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
           (changeVisualization)
           ?
           <div>
-            <button onClick={onSave}>Save</button>
-            <button onClick={onCancel}>Cancel</button>
+            <Button style={{ marginRight: '.5rem' }} onClick={onSave}>Save</Button>
+            <Button onClick={() => onCancel('row')}>Cancel</Button>
           </div>
-          : <button onClick={() => onEditRow(rowData)}>Edit ({rowData[`${column.key}`]})</button>
+          : 
+          <div>
+            <span className="row-id-label">{rowData[`${column.key}`]}</span>
+            <Button onClick={() => onEditRow(rowData)}>Edit</Button>
+          </div>
         }
       </td>
     )
@@ -126,9 +132,7 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
           { 
             changeDisplay
             ? rowData[`${column.key}`]
-            : <Space direction="vertical">
-              <input type="date" onChange={e => handleChange(e.target.value, column.key)} />
-            </Space>
+            : <input type="date" onChange={e => handleChange(e.target.value, column.key)} value={editableRow[`${column.key}`]} />
           }
           </td>
         )
@@ -145,16 +149,6 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
     }
   }
 
-
-
-
-
-
-
-
-  
-
-
   const onEditHeader = (header) => {
     console.log(header)
     setEditableHeader(header);
@@ -162,20 +156,26 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
   }
 
   const renderTableHeader = () => {
-
     return columns.map((header, index) => {
       let changeVisualization = (header.key === inEditModeHeader.headerKey) && inEditModeHeader.status;
       return (
         <th key={header.key}>
           {
             !changeVisualization
-            ? <> {header.title} <EditOutlined onClick={() => onEditHeader(header)} /> </>
+            ?
+            <>
+              {
+                (header.key === 'key')
+                ? <></>
+                : <>{header.title} <EditOutlined onClick={() => onEditHeader(header)} /> </>
+              }
+            </>
             : 
             <>
               <Input onChange={e => handleChangeHeader(e.target.value, header.key)} value={header.title} />
               <div>
-                <button onClick={onSaveHeader}>Save</button>
-                <button onClick={onCancel}>Cancel</button>
+                <Button onClick={onSaveHeader}>Save</Button>
+                <Button onClick={() => onCancel('header')}>Cancel</Button>
               </div>
             </>
           }
@@ -190,9 +190,9 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
         <tr key={index}>
           { columns.map(column => {
             return column.key === 'key' ?
-              <EditRow column={column} rowData={rowData}></EditRow>
+              <EditRow key={nanoid()} column={column} rowData={rowData}></EditRow>
               :
-              <SimpleRow column={column} rowData={rowData}></SimpleRow>
+              <SimpleRow key={nanoid()} column={column} rowData={rowData}></SimpleRow>
           })}
         </tr>
       )

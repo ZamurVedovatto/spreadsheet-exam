@@ -1,5 +1,3 @@
-// import logo from './logo.svg';
-// import './App.css';
 import 'antd/dist/antd.css'; 
 
 import Spreadsheet from "./components/Spreadsheet";

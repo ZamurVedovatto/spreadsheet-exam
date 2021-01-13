@@ -1,49 +1,35 @@
+import './Spreadsheet.css';
 import { useState, useEffect } from "react";
 import ColumnForm from "./ColumnForm";
 import DataTable from "./DataTable";
+import { Button } from 'antd';
 
 const firstColumn = { title: 'Key', dataIndex: 'key', key: 'key', type: 'text' };
-const secondColumn = { title: 'Name', dataIndex: 'name', key: 'name', type: 'text' };
-const thirdColumn = { title: 'Age', dataIndex: 'age', key: 'age', type: 'number' };
-const fourthColumn = { title: 'Birthday', dataIndex: 'birthday', key: 'birthday', type: 'date' };
-const fifthColumn = { title: 'Gender', dataIndex: 'gender', key: 'gender', type: 'select' };
 
 export default function Spreadsheet() {
-  const [columns, setColumns] = useState([firstColumn, secondColumn, thirdColumn, fourthColumn, fifthColumn]);
-  const [dataSource, setDataSource] = useState([
-    {key: '1', name: 'Mike', age: 11, birthday: '2021-01-13', gender: 'M'},
-    {key: '2', name: 'Jonh', age: 22, birthday: '2021-01-13', gender: 'F'},
-    {key: '3', name: 'AAAA', age: 11, birthday: '2021-01-13', gender: 'M'},
-    {key: '4', name: 'BBBB', age: 11, birthday: '2021-01-13', gender: 'F'}
-  ])
+  const [columns, setColumns] = useState([firstColumn]);
+  const [dataSource, setDataSource] = useState([]);
+  const [idNewRow, setIdNewRow] = useState(1);
 
   useEffect(() => {
-    checkRows();
-  }, [columns]);
-
-  useEffect(() => {
-    fillDataSource();
-  }, [dataSource]);
+    if (columns.length === 1) addRow(1);
+  }, [columns])
 
   const onAddColumn = (newColumn) => {
     newColumn.key = newColumn.title.replace(/ /g,'-');
     setColumns([...columns, newColumn]);
   }
 
-  const checkRows = () => {
-    if (columns.length === 2) onAddRows(10);
-  }
-
-  const onAddRows = (amount) => {
-  }
-
-  const fillDataSource = () => {
-    console.log(dataSource);
-  }
-
-  const addOne = () => {
-    let newOne = {key: '3', name: 'John', age: 123, asas: 'asas'};
-    setDataSource([...dataSource, newOne ])
+  const addRow = (amount) => {
+    for (let index = 0; index < amount; index++) {
+      let newRow = {};
+      columns.forEach(column => {
+        newRow[column.key] = null;
+      })
+      newRow['key'] = idNewRow;
+      setIdNewRow(idNewRow + 1);
+      setDataSource([...dataSource, newRow]);
+    }
   }
 
   const changeItemOnData = (index, row) => {
@@ -59,19 +45,23 @@ export default function Spreadsheet() {
   }
 
   return (
-    <>
+    <div className="spreadsheet-wrapper">
       <ColumnForm onAddColumn={onAddColumn}></ColumnForm>
-      <span>{JSON.stringify(columns)}</span>
-      <button onClick={addOne}>addone</button>
-      <hr />
-      <DataTable
-        columns={columns}
-        dataSource={dataSource}
-        changeHeaderTitle={changeHeaderTitle}
-        changeItemOnData={changeItemOnData}
-      ></DataTable>
-      <hr />
-      <button onClick={addOne}>add 10 rows</button>
-    </>
+      {
+        (columns.length > 1) &&
+        <div>
+          <DataTable
+            columns={columns}
+            dataSource={dataSource}
+            changeHeaderTitle={changeHeaderTitle}
+            changeItemOnData={changeItemOnData}
+          ></DataTable>
+          <div className="spreadsheet__actions">
+            <Button onClick={() => addRow(10)}>Add Row</Button>
+          </div>
+
+        </div>
+      }
+    </div>
   )
 }

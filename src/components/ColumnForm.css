@@ -1,4 +1,6 @@
-new-column__wrapper {}
+.new-column__wrapper {
+  margin-bottom: 1rem;
+}
 .new-column__card {
   width: 300px;
 }

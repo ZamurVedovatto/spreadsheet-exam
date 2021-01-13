@@ -60,7 +60,7 @@ export default function ColumnForm({ onAddColumn }) {
             </Select>
           </Form.Item>
           <Form.Item {...tailLayout} name="required" valuePropName="checked">
-            <Checkbox checked>Requried</Checkbox>
+            <Checkbox checked>Required</Checkbox>
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">Submit</Button>
