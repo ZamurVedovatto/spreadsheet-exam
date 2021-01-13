@@ -16,11 +16,12 @@ Storage.prototype.getObj = function(key) {
 export default function Spreadsheet() {
   const [columns, setColumns] = useState(localStorage.getObj('columns') || [firstColumn]);
   const [dataSource, setDataSource] = useState(localStorage.getObj('rows') || []);
-  const [idNewRow, setIdNewRow] = useState(columns.length);
+  const [idNewRow, setIdNewRow] = useState(dataSource.length + 1);
+  // const [newRow, setNewRow] = useState({key: (dataSource.length + 1)})
 
   useEffect(() => {
     console.log(columns)
-    if (columns.length === 1) addRow(1);
+    if (columns.length === 1) addRow(10);
     localStorage.setObj('columns', columns)
   }, [columns])
 
@@ -42,6 +43,8 @@ export default function Spreadsheet() {
       newRow['key'] = idNewRow;
       setIdNewRow(idNewRow + 1);
       setDataSource([...dataSource, newRow]);
+
+      console.log(newRow)
     }
   }
 
