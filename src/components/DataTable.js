@@ -1,5 +1,4 @@
-import { nanoid } from 'nanoid'
-
+import { nanoid } from 'nanoid'; // randomly create keys 
 import './DataTable.css'
 import { useState } from "react";
 import { EditOutlined } from '@ant-design/icons';
@@ -12,14 +11,14 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
     status: false,
     headerKey: null
   });
-
   const [editableRow, setEditableRow] = useState({});
   const [inEditMode, setInEditMode] = useState({
     status: false,
     rowKey: null
   });
 
-  const onSave = () => {
+  const onSaveRow = () => {
+    // select the edited row key
     let rowToChange = dataSource.findIndex(function(row) { 
       return row.key == editableRow.key; 
     });
@@ -28,6 +27,7 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
   }
 
   const onSaveHeader = () => {
+    // select the edited header key
     let headerTochange = columns.findIndex(function(column) { 
       return column.key == editableHeader.key; 
     });
@@ -35,6 +35,7 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
     onCancel('header');
   }
 
+  // reset state
   const onCancel = (type) => {
     switch (type) {
       case 'row':
@@ -54,10 +55,12 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
     }
   }
 
+  // set a new value to rows according to the input changes based on the column keys
   const handleChange = (value, columnKey) => {
     setEditableRow({...editableRow, [columnKey]: value});
   }
 
+  // set a new value to headers according to the input changes based on the header title
   const handleChangeHeader = (evt) => {    
     let value = evt.target.value;
     setEditableHeader({...editableHeader, title: value});
@@ -72,7 +75,7 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
           ?
           <div>
             <span className="row-id-label">{rowData[`${column.key}`]}</span>
-            <Button style={{ marginRight: '.5rem' }} onClick={onSave}>Save</Button>
+            <Button style={{ marginRight: '.5rem' }} onClick={onSaveRow}>Save</Button>
             <Button onClick={() => onCancel('row')}>Cancel</Button>
           </div>
           : 
@@ -83,11 +86,6 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
         }
       </td>
     )
-  }
-
-  const onEditRow = (rowData) => {
-    setEditableRow(rowData);
-    setInEditMode({...inEditMode, status: true, rowKey: rowData.key})
   }
 
   const SimpleRow = ({ column, rowData }) => {
@@ -149,8 +147,14 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
     }
   }
 
+  // set a row to edit
+  const onEditRow = (rowData) => {
+    setEditableRow(rowData);
+    setInEditMode({...inEditMode, status: true, rowKey: rowData.key})
+  }
+
+  // set a header to edit
   const onEditHeader = (header) => {
-    console.log(header)
     setEditableHeader(header);
     setInEditModeHeader({...inEditModeHeader, status: true, headerKey: header.key});
   }
@@ -198,8 +202,6 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
       )
     })
   }
-
-
 
   return (
     <table id="data-table">

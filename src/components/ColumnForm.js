@@ -1,11 +1,12 @@
-import { Row, Col, Form, Input, Select, Button, Checkbox, Card, List, Typography, Divider } from 'antd';
-import { useState, useEffect } from 'react';
+import { Row, Col, Form, Input, Select, Button, Checkbox, Card, List, Typography } from 'antd';
+import { useState } from 'react';
 const { Option } = Select;
 
+// form default values
 const initialValues = {
   type: 'text',
-  tile: 'New Column',
-  required: true,
+  title: 'New Column',
+  required: true
 }
 
 const columnTypes = [
@@ -16,14 +17,11 @@ const columnTypes = [
 ]
 
 export default function ColumnForm({ onAddColumn }) {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm(); // https://ant.design/components/form/#FormInstance
   const [option, setOption] = useState({ show: false, value: "" });
   const [selectOptions, setSelectOptions] = useState([]);
   
-  useEffect(() => {
-    console.log(selectOptions);
-  }, [selectOptions]);
-
+  // check if show or not the Select options 
   const onTypeChange = (value) => {
     switch (value) {
       case 'select':
@@ -35,8 +33,8 @@ export default function ColumnForm({ onAddColumn }) {
     }
   };
 
+  // form submited succesfully
   const onFinish = (values) => {
-    console.log(values);
     if (values.type === 'select') {
       if (selectOptions.length === 0) {
         return;
@@ -47,20 +45,24 @@ export default function ColumnForm({ onAddColumn }) {
     onReset();
   };
 
+  // form submited with errors
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
+  // reset form after submit
   const onReset = () => {
     form.resetFields();
     setOption({ show: false, value: "" });
   };
 
+  // set new values based on input changes
   const handleOption = (evt) => {
     let value = evt.target.value;
     setOption({ ...option, value });
   }
 
+  // add new option (type Select)
   const onAddOption = () => {
     setSelectOptions([...selectOptions, option.value]);
     setOption({ show: true, value: "" });

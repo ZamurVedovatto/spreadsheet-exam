@@ -1,17 +1,6 @@
-change css to sass
-change component function to arrow function
-
-
-
 https://ant.design/components/table/
-
-
 https://medium.com/@vanu.verma/creating-a-dynamic-table-in-react-part-1-36cc65a81e62
-
 https://thoughtbot.com/blog/using-redux-with-react-hooks
-
-
-
 input loses focus
 https://stackoverflow.com/questions/59715158/react-hooks-input-loses-focus-when-1-character-is-typed-in
 https://www.iditect.com/how-to/56758864.html#:~:text=React%20input%20losing%20focus%20when,the%20currently%20focused%20text%20field.
