@@ -21,7 +21,7 @@ export default function Spreadsheet() {
 
   useEffect(() => {
     console.log(columns)
-    if (columns.length === 1) addRow(10);
+    if (columns.length === 2) addRow(10);
     localStorage.setObj('columns', columns)
   }, [columns])
 
@@ -29,7 +29,7 @@ export default function Spreadsheet() {
     localStorage.setObj('rows', dataSource)
   }, [dataSource])
 
-  const onAddColumn = (newColumn) => {
+  const onAddColumn = (newColumn) => {  
     newColumn.key = newColumn.title.replace(/ /g,'-');
     setColumns([...columns, newColumn]);
   }
