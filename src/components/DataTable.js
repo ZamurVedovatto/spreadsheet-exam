@@ -71,6 +71,7 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
           (changeVisualization)
           ?
           <div>
+            <span className="row-id-label">{rowData[`${column.key}`]}</span>
             <Button style={{ marginRight: '.5rem' }} onClick={onSave}>Save</Button>
             <Button onClick={() => onCancel('row')}>Cancel</Button>
           </div>
@@ -98,7 +99,7 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
           { 
             changeDisplay 
             ? rowData[`${column.key}`]
-            : <Input placeholder="" onChange={e => handleChange(e.target.value, column.key)} value={editableRow[`${column.key}`]} />
+            : <Input autoFocus onChange={e => handleChange(e.target.value, column.key)} value={editableRow[`${column.key}`]} />
           }
           </td>
         )
@@ -108,7 +109,7 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
             { 
               changeDisplay 
               ? rowData[`${column.key}`]
-              : <InputNumber onChange={e => handleChange(e, column.key)} value={editableRow[`${column.key}`]} />
+              : <InputNumber autoFocus onChange={e => handleChange(e, column.key)} value={editableRow[`${column.key}`]} />
             }
           </td>
         )
@@ -142,7 +143,7 @@ export default function DataTable({ columns, dataSource, changeHeaderTitle, chan
           { 
             changeDisplay 
             ? rowData[`${column.key}`]
-            : <Input placeholder="Basic usage" onChange={e => handleChange(e.target.value, column.key)} />
+            : <Input autoFocus onChange={e => handleChange(e.target.value, column.key)} />
           }
           </td>
         )

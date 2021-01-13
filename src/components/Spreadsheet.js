@@ -6,6 +6,15 @@ import { Button } from 'antd';
 
 const firstColumn = { title: 'Key', dataIndex: 'key', key: 'key', type: 'text' };
 
+// Storage.prototype.setObj = function(key, obj) {
+//   return this.setItem(key, JSON.stringify(obj))
+// }
+// Storage.prototype.getObj = function(key) {
+//   return JSON.parse(this.getItem(key))
+// }
+// localStorage.getObj('columns')
+// localStorage.setObj('columns', columns)
+
 export default function Spreadsheet() {
   const [columns, setColumns] = useState([firstColumn]);
   const [dataSource, setDataSource] = useState([]);
@@ -14,6 +23,9 @@ export default function Spreadsheet() {
   useEffect(() => {
     if (columns.length === 1) addRow(1);
   }, [columns])
+
+  useEffect(() => {
+  }, [dataSource])
 
   const onAddColumn = (newColumn) => {
     newColumn.key = newColumn.title.replace(/ /g,'-');
