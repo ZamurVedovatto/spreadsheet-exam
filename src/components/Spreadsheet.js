@@ -6,26 +6,26 @@ import { Button } from 'antd';
 
 const firstColumn = { title: 'Key', dataIndex: 'key', key: 'key', type: 'text' };
 
-// Storage.prototype.setObj = function(key, obj) {
-//   return this.setItem(key, JSON.stringify(obj))
-// }
-// Storage.prototype.getObj = function(key) {
-//   return JSON.parse(this.getItem(key))
-// }
-// localStorage.getObj('columns')
-// localStorage.setObj('columns', columns)
+Storage.prototype.setObj = function(key, obj) {
+  return this.setItem(key, JSON.stringify(obj))
+}
+Storage.prototype.getObj = function(key) {
+  return JSON.parse(this.getItem(key))
+}
 
 export default function Spreadsheet() {
-  const [columns, setColumns] = useState([firstColumn]);
-  const [dataSource, setDataSource] = useState([]);
-  const [idNewRow, setIdNewRow] = useState(1);
+  const [columns, setColumns] = useState(localStorage.getObj('columns') || [firstColumn]);
+  const [dataSource, setDataSource] = useState(localStorage.getObj('rows') || []);
+  const [idNewRow, setIdNewRow] = useState(columns.length);
 
   useEffect(() => {
     console.log(columns)
     if (columns.length === 1) addRow(1);
+    localStorage.setObj('columns', columns)
   }, [columns])
 
   useEffect(() => {
+    localStorage.setObj('rows', dataSource)
   }, [dataSource])
 
   const onAddColumn = (newColumn) => {
